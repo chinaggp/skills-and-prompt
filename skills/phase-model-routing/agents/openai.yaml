@@ -1,0 +1,4 @@
+interface:
+  display_name: "Phase Model Routing"
+  short_description: "Route analysis and coding tasks to the right model."
+  default_prompt: "Use $phase-model-routing to route analysis work to GPT-5.4 and coding work to GPT-5.4-mini."
