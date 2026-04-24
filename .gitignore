@@ -1,0 +1,28 @@
+# IDE / editor
+.idea/
+.vscode/
+*.iml
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+logs/
+
+# Dependencies and build output
+node_modules/
+dist/
+build/
+target/
+out/
+
+# Local environment
+.env
+.env.*
+!.env.example
+
+# Agent temporary files
+.agent/script/
