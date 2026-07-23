@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <UseWPF>true</UseWPF>
+    <PlatformTarget>x64</PlatformTarget>
+    <ApplicationIcon />
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WindowsBlackHole.Core\WindowsBlackHole.Core.csproj" />
+    <ProjectReference Include="..\WindowsBlackHole.Shell\WindowsBlackHole.Shell.csproj" />
+  </ItemGroup>
+</Project>

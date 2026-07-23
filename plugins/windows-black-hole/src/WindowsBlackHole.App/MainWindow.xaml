@@ -1,0 +1,151 @@
+<Window x:Class="WindowsBlackHole.App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Windows Black Hole"
+        Width="520"
+        Height="520"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        Topmost="True"
+        ShowInTaskbar="False"
+        ResizeMode="NoResize"
+        AllowDrop="True"
+        DragEnter="OnDragEnter"
+        DragOver="OnDragOver"
+        DragLeave="OnDragLeave"
+        Drop="OnDrop">
+    <Canvas x:Name="RootCanvas" Width="520" Height="520" Background="Transparent">
+        <Canvas x:Name="DistortionField"
+                Width="430"
+                Height="430"
+                Canvas.Left="45"
+                Canvas.Top="45"
+                RenderTransformOrigin="0.5,0.5">
+            <Canvas.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform x:Name="FieldScale" ScaleX="1" ScaleY="1" />
+                    <SkewTransform x:Name="FieldSkew" AngleX="0" AngleY="0" />
+                    <RotateTransform x:Name="FieldRotation" Angle="0" />
+                </TransformGroup>
+            </Canvas.RenderTransform>
+
+            <Ellipse Width="390" Height="208" Canvas.Left="20" Canvas.Top="111"
+                     StrokeThickness="48" Opacity="0.18">
+                <Ellipse.Stroke>
+                    <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                        <GradientStop Color="#00FFF6DF" Offset="0" />
+                        <GradientStop Color="#FFFFC98E" Offset="0.28" />
+                        <GradientStop Color="#FFFFFFFF" Offset="0.53" />
+                        <GradientStop Color="#FFFF8B3D" Offset="0.78" />
+                        <GradientStop Color="#00FF7A24" Offset="1" />
+                    </LinearGradientBrush>
+                </Ellipse.Stroke>
+                <Ellipse.Effect>
+                    <BlurEffect Radius="24" />
+                </Ellipse.Effect>
+            </Ellipse>
+
+            <Ellipse Width="372" Height="160" Canvas.Left="29" Canvas.Top="135"
+                     StrokeThickness="23">
+                <Ellipse.Stroke>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="#55FFC981" Offset="0" />
+                        <GradientStop Color="#FFFFFFFF" Offset="0.34" />
+                        <GradientStop Color="#FFFFE7C6" Offset="0.52" />
+                        <GradientStop Color="#FFFF7A26" Offset="0.74" />
+                        <GradientStop Color="#22FFB65A" Offset="1" />
+                    </LinearGradientBrush>
+                </Ellipse.Stroke>
+                <Ellipse.Effect>
+                    <BlurEffect Radius="5" />
+                </Ellipse.Effect>
+            </Ellipse>
+
+            <Ellipse Width="340" Height="130" Canvas.Left="45" Canvas.Top="150"
+                     Stroke="#FFFFF2E3" StrokeThickness="4" Opacity="0.92">
+                <Ellipse.Effect>
+                    <BlurEffect Radius="2" />
+                </Ellipse.Effect>
+            </Ellipse>
+
+            <Path Stroke="#FFFF9B49" StrokeThickness="8" Opacity="0.65"
+                  Data="M 56,232 C 142,300 288,298 377,222">
+                <Path.Effect>
+                    <BlurEffect Radius="8" />
+                </Path.Effect>
+            </Path>
+            <Path Stroke="#FFFFFFFF" StrokeThickness="4" Opacity="0.82"
+                  Data="M 66,197 C 158,126 300,132 367,204">
+                <Path.Effect>
+                    <BlurEffect Radius="4" />
+                </Path.Effect>
+            </Path>
+        </Canvas>
+
+        <Ellipse x:Name="LensGlow"
+                 Width="210"
+                 Height="210"
+                 Canvas.Left="155"
+                 Canvas.Top="155"
+                 Fill="Transparent"
+                 Stroke="#AAFFF8E9"
+                 StrokeThickness="12"
+                 Opacity="0.52">
+            <Ellipse.Effect>
+                <BlurEffect Radius="18" />
+            </Ellipse.Effect>
+        </Ellipse>
+
+        <Ellipse x:Name="EventHorizon"
+                 Width="132"
+                 Height="132"
+                 Canvas.Left="194"
+                 Canvas.Top="194"
+                 Cursor="SizeAll"
+                 MouseLeftButtonDown="OnEventHorizonMouseLeftButtonDown">
+            <Ellipse.Fill>
+                <RadialGradientBrush>
+                    <GradientStop Color="#FF000000" Offset="0" />
+                    <GradientStop Color="#FF000000" Offset="0.76" />
+                    <GradientStop Color="#FF090604" Offset="0.91" />
+                    <GradientStop Color="#FFFFF7EA" Offset="1" />
+                </RadialGradientBrush>
+            </Ellipse.Fill>
+            <Ellipse.Effect>
+                <DropShadowEffect Color="#FFFFEBD0"
+                                  BlurRadius="24"
+                                  ShadowDepth="0"
+                                  Opacity="0.9" />
+            </Ellipse.Effect>
+        </Ellipse>
+
+        <Ellipse x:Name="DropPulse"
+                 Width="148"
+                 Height="148"
+                 Canvas.Left="186"
+                 Canvas.Top="186"
+                 Fill="Transparent"
+                 Stroke="#00FFFFFF"
+                 StrokeThickness="5"
+                 IsHitTestVisible="False" />
+
+        <Border x:Name="StatusBadge"
+                Canvas.Left="110"
+                Canvas.Top="444"
+                Width="300"
+                Padding="10,5"
+                CornerRadius="14"
+                Background="#BB090909"
+                BorderBrush="#44FFFFFF"
+                BorderThickness="1"
+                Opacity="0"
+                IsHitTestVisible="False">
+            <TextBlock x:Name="StatusText"
+                       Foreground="#FFF7EBDD"
+                       FontSize="13"
+                       TextAlignment="Center"
+                       TextTrimming="CharacterEllipsis" />
+        </Border>
+    </Canvas>
+</Window>

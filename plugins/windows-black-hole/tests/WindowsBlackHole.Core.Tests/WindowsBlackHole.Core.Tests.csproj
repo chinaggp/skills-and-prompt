@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\WindowsBlackHole.Core\WindowsBlackHole.Core.csproj" />
+    <ProjectReference Include="..\..\src\WindowsBlackHole.Shell\WindowsBlackHole.Shell.csproj" />
+  </ItemGroup>
+</Project>
