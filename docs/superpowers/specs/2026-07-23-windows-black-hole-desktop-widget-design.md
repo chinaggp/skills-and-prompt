@@ -66,9 +66,9 @@
 
 职责：
 
-- 创建透明、无边框、非激活、始终置顶的顶层窗口；
-- 管理窗口位置、DPI、多显示器和右键菜单；
-- 注册并处理 OLE Shell 拖放；
+- 启动并关闭原生覆盖窗与渲染模块；
+- 管理窗口位置、DPI、多显示器和右键菜单命令；
+- 在原生覆盖窗句柄上注册并处理 OLE Shell 拖放；
 - 每帧提供鼠标屏幕坐标、拖拽状态和交互强度；
 - 保存本地设置；
 - 调用渲染接口和回收站接口；
@@ -80,6 +80,8 @@
 
 职责：
 
+- 创建逐像素透明、无边框、非激活、始终置顶的原生 Win32 覆盖窗；
+- 为覆盖窗创建 DirectComposition Target 和预乘 Alpha Composition Swap Chain；
 - 捕获黑洞后方当前显示器的局部画面；
 - 生成事件视界、光子环、吸积盘、粒子和辉光；
 - 使用 HLSL 对背景采样坐标实施径向引力透镜映射；
@@ -88,7 +90,7 @@
 - 收集 CPU/GPU 帧耗时并选择画质等级；
 - 处理 Direct3D 设备丢失并重建资源。
 
-渲染模块拥有自己的 D3D11 Device、Capture Frame Pool、纹理和合成目标。Desktop Shell 只通过窄接口传入窗口句柄、尺寸、DPI、坐标和交互状态，不直接操作 GPU 资源。
+渲染模块拥有覆盖窗句柄、D3D11 Device、Capture Frame Pool、纹理和合成目标。创建成功后把覆盖窗句柄返回给 Desktop Shell，使后者能注册 OLE Drop Target、更新位置和处理菜单命令。Desktop Shell 不直接操作 GPU 资源。
 
 ### 5.3 Recycle Service
 
@@ -153,7 +155,8 @@ plugins/windows-black-hole/
 
 - 影响半径从事件视界中心计算，不是从视觉本体边缘计算。
 - 顶层透明窗口覆盖影响区，并在四周增加 16 逻辑像素的 Shader 采样安全边距；默认窗口因此为 512 × 512 逻辑像素。
-- 使用 `AppWindow`/Win32 互操作保持始终置顶。
+- 原生模块使用 `WS_POPUP | WS_EX_TOOLWINDOW | WS_EX_NOACTIVATE | WS_EX_NOREDIRECTIONBITMAP` 创建覆盖窗，并通过 DirectComposition 预乘 Alpha Swap Chain 输出逐像素透明内容。
+- Desktop Shell 使用返回的 HWND 管理位置，并以 `SetWindowPos(HWND_TOPMOST, ...)` 保持始终置顶。
 - 窗口不出现在任务切换器中，不抢夺前台焦点。
 - 正常鼠标事件在事件视界外采用透明命中；事件视界同时是普通鼠标的移动手柄和文件拖拽的投放区。
 - OLE `IDropTarget` 注册在完整影响窗口上，使文件进入外围时即可获得拖拽坐标和数据对象。
@@ -421,5 +424,9 @@ Recycling
   <https://learn.microsoft.com/en-us/windows/win32/direct2d/effects-overview>
 - DirectX 图形组合：
   <https://learn.microsoft.com/en-us/windows/win32/getting-started-with-directx-graphics>
+- DirectComposition Window Target：
+  <https://learn.microsoft.com/en-us/windows/win32/api/dcomp/nf-dcomp-idcompositiondesktopdevice-createtargetforhwnd>
+- Composition Swap Chain：
+  <https://learn.microsoft.com/en-us/windows/win32/api/dxgi1_2/nf-dxgi1_2-idxgifactory2-createswapchainforcomposition>
 - IFileOperation 回收站标志：
   <https://learn.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ifileoperation-setoperationflags>
