@@ -15,137 +15,510 @@
         DragOver="OnDragOver"
         DragLeave="OnDragLeave"
         Drop="OnDrop">
-    <Canvas x:Name="RootCanvas" Width="520" Height="520" Background="Transparent">
-        <Canvas x:Name="DistortionField"
-                Width="430"
-                Height="430"
-                Canvas.Left="45"
-                Canvas.Top="45"
+    <Window.Resources>
+        <LinearGradientBrush x:Key="HotMatterBrush"
+                             StartPoint="0,0.55"
+                             EndPoint="1,0.35">
+            <GradientStop Color="#00FF6A18" Offset="0" />
+            <GradientStop Color="#99FF7A22" Offset="0.18" />
+            <GradientStop Color="#FFFFB45D" Offset="0.42" />
+            <GradientStop Color="#FFFFF1D5" Offset="0.62" />
+            <GradientStop Color="#FFFF8A2B" Offset="0.82" />
+            <GradientStop Color="#00FF5A12" Offset="1" />
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="WhiteHotBrush"
+                             StartPoint="0,0.65"
+                             EndPoint="1,0.25">
+            <GradientStop Color="#00FFFFFF" Offset="0" />
+            <GradientStop Color="#88FFD6A4" Offset="0.22" />
+            <GradientStop Color="#FFFFFFFF" Offset="0.52" />
+            <GradientStop Color="#FFFFD6A2" Offset="0.73" />
+            <GradientStop Color="#00FF7C25" Offset="1" />
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="GridBrush"
+                             StartPoint="0,0"
+                             EndPoint="1,1">
+            <GradientStop Color="#006FA3B8" Offset="0" />
+            <GradientStop Color="#436E8A93" Offset="0.34" />
+            <GradientStop Color="#5CBE8C62" Offset="0.57" />
+            <GradientStop Color="#006E8290" Offset="1" />
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="PhotonGlowBrush"
+                             StartPoint="0,1"
+                             EndPoint="1,0">
+            <GradientStop Color="#00FF6818" Offset="0" />
+            <GradientStop Color="#8AFF8A30" Offset="0.22" />
+            <GradientStop Color="#D8FFD39A" Offset="0.58" />
+            <GradientStop Color="#7AFFF4DB" Offset="0.78" />
+            <GradientStop Color="#00FF9A43" Offset="1" />
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="PhotonArcBrush"
+                             StartPoint="0,1"
+                             EndPoint="1,0">
+            <GradientStop Color="#10FF7A22" Offset="0" />
+            <GradientStop Color="#C8FFB75F" Offset="0.28" />
+            <GradientStop Color="#FFFFF5E3" Offset="0.63" />
+            <GradientStop Color="#E8FFD399" Offset="0.78" />
+            <GradientStop Color="#18FF8A2E" Offset="1" />
+        </LinearGradientBrush>
+    </Window.Resources>
+
+    <Canvas x:Name="RootCanvas"
+            Width="520"
+            Height="520"
+            Background="Transparent"
+            ClipToBounds="True">
+        <!-- Sparse star dust. The transparent window edge remains visually empty. -->
+        <Canvas x:Name="DustLayer"
+                Width="520"
+                Height="520"
+                IsHitTestVisible="False"
+                Opacity="0.58"
                 RenderTransformOrigin="0.5,0.5">
             <Canvas.RenderTransform>
                 <TransformGroup>
-                    <ScaleTransform x:Name="FieldScale" ScaleX="1" ScaleY="1" />
-                    <SkewTransform x:Name="FieldSkew" AngleX="0" AngleY="0" />
-                    <RotateTransform x:Name="FieldRotation" Angle="0" />
+                    <RotateTransform x:Name="DustRotation" />
+                    <TranslateTransform x:Name="DustTranslation" />
                 </TransformGroup>
             </Canvas.RenderTransform>
-
-            <Ellipse Width="390" Height="208" Canvas.Left="20" Canvas.Top="111"
-                     StrokeThickness="48" Opacity="0.18">
-                <Ellipse.Stroke>
-                    <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
-                        <GradientStop Color="#00FFF6DF" Offset="0" />
-                        <GradientStop Color="#FFFFC98E" Offset="0.28" />
-                        <GradientStop Color="#FFFFFFFF" Offset="0.53" />
-                        <GradientStop Color="#FFFF8B3D" Offset="0.78" />
-                        <GradientStop Color="#00FF7A24" Offset="1" />
-                    </LinearGradientBrush>
-                </Ellipse.Stroke>
-                <Ellipse.Effect>
-                    <BlurEffect Radius="24" />
-                </Ellipse.Effect>
-            </Ellipse>
-
-            <Ellipse Width="372" Height="160" Canvas.Left="29" Canvas.Top="135"
-                     StrokeThickness="23">
-                <Ellipse.Stroke>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                        <GradientStop Color="#55FFC981" Offset="0" />
-                        <GradientStop Color="#FFFFFFFF" Offset="0.34" />
-                        <GradientStop Color="#FFFFE7C6" Offset="0.52" />
-                        <GradientStop Color="#FFFF7A26" Offset="0.74" />
-                        <GradientStop Color="#22FFB65A" Offset="1" />
-                    </LinearGradientBrush>
-                </Ellipse.Stroke>
-                <Ellipse.Effect>
-                    <BlurEffect Radius="5" />
-                </Ellipse.Effect>
-            </Ellipse>
-
-            <Ellipse Width="340" Height="130" Canvas.Left="45" Canvas.Top="150"
-                     Stroke="#FFFFF2E3" StrokeThickness="4" Opacity="0.92">
+            <Ellipse Width="2" Height="2" Canvas.Left="91" Canvas.Top="108" Fill="#A8D9E8EF" />
+            <Ellipse Width="1.4" Height="1.4" Canvas.Left="143" Canvas.Top="67" Fill="#88FFFFFF" />
+            <Ellipse Width="2.6" Height="2.6" Canvas.Left="194" Canvas.Top="102" Fill="#B7FFC98A" />
+            <Ellipse Width="1.2" Height="1.2" Canvas.Left="264" Canvas.Top="54" Fill="#77FFFFFF" />
+            <Ellipse Width="2" Height="2" Canvas.Left="338" Canvas.Top="90" Fill="#9ED4E2EA" />
+            <Ellipse Width="1.5" Height="1.5" Canvas.Left="423" Canvas.Top="122" Fill="#99FFD8AC" />
+            <Ellipse Width="1.3" Height="1.3" Canvas.Left="463" Canvas.Top="199" Fill="#88FFFFFF" />
+            <Ellipse Width="2.2" Height="2.2" Canvas.Left="445" Canvas.Top="331" Fill="#A7FFC278" />
+            <Ellipse Width="1.4" Height="1.4" Canvas.Left="398" Canvas.Top="406" Fill="#75FFFFFF" />
+            <Ellipse Width="2" Height="2" Canvas.Left="319" Canvas.Top="449" Fill="#89D6E8F2" />
+            <Ellipse Width="1.2" Height="1.2" Canvas.Left="222" Canvas.Top="456" Fill="#80FFFFFF" />
+            <Ellipse Width="2.3" Height="2.3" Canvas.Left="144" Canvas.Top="423" Fill="#9DFFC683" />
+            <Ellipse Width="1.5" Height="1.5" Canvas.Left="72" Canvas.Top="377" Fill="#80FFFFFF" />
+            <Ellipse Width="1.2" Height="1.2" Canvas.Left="55" Canvas.Top="231" Fill="#80C6D8E3" />
+            <Ellipse Width="3" Height="3" Canvas.Left="112" Canvas.Top="270" Fill="#A9FFB865">
                 <Ellipse.Effect>
                     <BlurEffect Radius="2" />
                 </Ellipse.Effect>
             </Ellipse>
+            <Path Data="M 83,150 C 129,126 162,121 204,123"
+                  Stroke="#256B8290"
+                  StrokeThickness="0.8" />
+            <Path Data="M 351,394 C 391,373 419,343 444,305"
+                  Stroke="#20C58B60"
+                  StrokeThickness="0.8" />
+        </Canvas>
 
-            <Path Stroke="#FFFF9B49" StrokeThickness="8" Opacity="0.65"
-                  Data="M 56,232 C 142,300 288,298 377,222">
+        <!-- Curved spacetime grid, inspired by the reference image. -->
+        <Canvas x:Name="GridLayer"
+                Width="460"
+                Height="460"
+                Canvas.Left="30"
+                Canvas.Top="30"
+                Opacity="0.46"
+                IsHitTestVisible="False"
+                RenderTransformOrigin="0.5,0.5">
+            <Canvas.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform x:Name="GridScale" ScaleX="1" ScaleY="1" />
+                    <SkewTransform x:Name="GridSkew" />
+                    <RotateTransform x:Name="GridRotation" />
+                </TransformGroup>
+            </Canvas.RenderTransform>
+            <Ellipse Width="422" Height="422" Canvas.Left="19" Canvas.Top="19"
+                     Fill="Transparent" Stroke="{StaticResource GridBrush}" StrokeThickness="0.7" />
+            <Ellipse Width="374" Height="374" Canvas.Left="43" Canvas.Top="43"
+                     Fill="Transparent" Stroke="{StaticResource GridBrush}" StrokeThickness="0.75" />
+            <Ellipse Width="324" Height="324" Canvas.Left="68" Canvas.Top="68"
+                     Fill="Transparent" Stroke="{StaticResource GridBrush}" StrokeThickness="0.8" />
+            <Ellipse Width="276" Height="276" Canvas.Left="92" Canvas.Top="92"
+                     Fill="Transparent" Stroke="{StaticResource GridBrush}" StrokeThickness="0.85" />
+            <Ellipse Width="232" Height="232" Canvas.Left="114" Canvas.Top="114"
+                     Fill="Transparent" Stroke="{StaticResource GridBrush}" StrokeThickness="0.9" />
+            <Ellipse Width="194" Height="194" Canvas.Left="133" Canvas.Top="133"
+                     Fill="Transparent" Stroke="#4BB98357" StrokeThickness="0.9" />
+            <Path Data="M 18,151 C 112,170 166,201 230,230 C 294,259 348,290 442,309"
+                  Stroke="{StaticResource GridBrush}" StrokeThickness="0.75" />
+            <Path Data="M 33,101 C 132,149 175,192 230,230 C 285,268 328,311 427,359"
+                  Stroke="{StaticResource GridBrush}" StrokeThickness="0.75" />
+            <Path Data="M 82,47 C 157,127 191,181 230,230 C 269,279 303,333 378,413"
+                  Stroke="{StaticResource GridBrush}" StrokeThickness="0.75" />
+            <Path Data="M 151,18 C 170,112 201,166 230,230 C 259,294 290,348 309,442"
+                  Stroke="{StaticResource GridBrush}" StrokeThickness="0.75" />
+            <Path Data="M 230,8 C 230,112 230,164 230,230 C 230,296 230,348 230,452"
+                  Stroke="{StaticResource GridBrush}" StrokeThickness="0.75" />
+            <Path Data="M 309,18 C 290,112 259,166 230,230 C 201,294 170,348 151,442"
+                  Stroke="{StaticResource GridBrush}" StrokeThickness="0.75" />
+            <Path Data="M 378,47 C 303,127 269,181 230,230 C 191,279 157,333 82,413"
+                  Stroke="{StaticResource GridBrush}" StrokeThickness="0.75" />
+            <Path Data="M 427,101 C 328,149 285,192 230,230 C 175,268 132,311 33,359"
+                  Stroke="{StaticResource GridBrush}" StrokeThickness="0.75" />
+        </Canvas>
+
+        <!-- Companion star and the matter stream feeding the main disk. -->
+        <Canvas x:Name="CompanionLayer"
+                Width="220"
+                Height="160"
+                Canvas.Left="34"
+                Canvas.Top="274"
+                Opacity="0.82"
+                IsHitTestVisible="False">
+            <Ellipse Width="96" Height="96" Canvas.Left="5" Canvas.Top="38"
+                     Fill="#30FF6A18">
+                <Ellipse.Effect>
+                    <BlurEffect Radius="30" />
+                </Ellipse.Effect>
+            </Ellipse>
+            <Ellipse Width="56" Height="56" Canvas.Left="24" Canvas.Top="57">
+                <Ellipse.Fill>
+                    <RadialGradientBrush GradientOrigin="0.67,0.52">
+                        <GradientStop Color="#FFFFF0C8" Offset="0" />
+                        <GradientStop Color="#FFFF9D3D" Offset="0.16" />
+                        <GradientStop Color="#FF7B1C08" Offset="0.51" />
+                        <GradientStop Color="#FF120704" Offset="0.82" />
+                        <GradientStop Color="#00FF6B1C" Offset="1" />
+                    </RadialGradientBrush>
+                </Ellipse.Fill>
+                <Ellipse.Effect>
+                    <DropShadowEffect Color="#FFFF7B22"
+                                      BlurRadius="22"
+                                      ShadowDepth="0"
+                                      Opacity="0.9" />
+                </Ellipse.Effect>
+            </Ellipse>
+            <Path Data="M 36,93 C 45,67 72,59 92,72 C 104,80 104,105 89,114"
+                  Stroke="#D9FFB058"
+                  StrokeThickness="2.2"
+                  Fill="Transparent" />
+            <Path Data="M 70,87 C 112,83 148,74 218,45"
+                  Stroke="#4AFF7A20"
+                  StrokeThickness="20">
                 <Path.Effect>
-                    <BlurEffect Radius="8" />
+                    <BlurEffect Radius="14" />
                 </Path.Effect>
             </Path>
-            <Path Stroke="#FFFFFFFF" StrokeThickness="4" Opacity="0.82"
-                  Data="M 66,197 C 158,126 300,132 367,204">
+            <Path Data="M 68,87 C 116,83 158,70 220,43"
+                  Stroke="{StaticResource HotMatterBrush}"
+                  StrokeThickness="6">
+                <Path.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform x:Name="MatterStreamScale"
+                                        CenterX="70"
+                                        CenterY="87"
+                                        ScaleX="1"
+                                        ScaleY="1" />
+                        <SkewTransform x:Name="MatterStreamSkew"
+                                       CenterX="70"
+                                       CenterY="87" />
+                    </TransformGroup>
+                </Path.RenderTransform>
+                <Path.Effect>
+                    <BlurEffect Radius="3" />
+                </Path.Effect>
+            </Path>
+            <Ellipse Width="8" Height="8" Canvas.Left="112" Canvas.Top="76" Fill="#D9FFB45C" />
+            <Ellipse Width="5" Height="5" Canvas.Left="151" Canvas.Top="61" Fill="#B8FFE2B8" />
+        </Canvas>
+
+        <!-- Back half of the accretion disk; fluid paths replace regular ellipses. -->
+        <Canvas x:Name="DistortionField"
+                Width="520"
+                Height="520"
+                IsHitTestVisible="False"
+                RenderTransformOrigin="0.5,0.5">
+            <Canvas.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform x:Name="FieldScale" ScaleX="1" ScaleY="1" />
+                    <SkewTransform x:Name="FieldSkew" />
+                    <RotateTransform x:Name="FieldRotation" />
+                </TransformGroup>
+            </Canvas.RenderTransform>
+            <Path Data="M 48,321 C 124,275 172,205 239,164 C 320,115 385,153 474,215"
+                  Stroke="#48FF741C"
+                  StrokeThickness="58">
+                <Path.Effect>
+                    <BlurEffect Radius="33" />
+                </Path.Effect>
+            </Path>
+            <Path Data="M 54,322 C 125,277 174,211 241,171 C 314,127 386,154 470,215"
+                  Stroke="{StaticResource HotMatterBrush}"
+                  StrokeThickness="24"
+                  Opacity="0.78">
+                <Path.Effect>
+                    <BlurEffect Radius="11" />
+                </Path.Effect>
+            </Path>
+            <Path Data="M 67,321 C 137,278 181,220 242,180 C 310,135 379,160 456,211"
+                  Stroke="{StaticResource WhiteHotBrush}"
+                  StrokeThickness="8"
+                  Opacity="0.93">
                 <Path.Effect>
                     <BlurEffect Radius="4" />
                 </Path.Effect>
             </Path>
+            <Path Data="M 105,310 C 157,272 191,225 243,193 C 305,155 354,164 420,201"
+                  Stroke="#BFFFF4D9"
+                  StrokeThickness="2.4"
+                  Opacity="0.9" />
+            <Path Data="M 91,336 C 149,292 187,254 231,226"
+                  Stroke="#9AFF7D25"
+                  StrokeThickness="3"
+                  Opacity="0.75" />
+            <Path Data="M 282,173 C 337,145 398,172 454,217"
+                  Stroke="#A8FF8A32"
+                  StrokeThickness="3"
+                  Opacity="0.75" />
         </Canvas>
 
-        <Ellipse x:Name="LensGlow"
-                 Width="210"
-                 Height="210"
-                 Canvas.Left="155"
-                 Canvas.Top="155"
+        <!-- Broken photon arcs avoid a synthetic, uniformly lit UI ring. -->
+        <Canvas x:Name="LensGlow"
+                Width="520"
+                Height="520"
+                Opacity="0.42"
+                IsHitTestVisible="False">
+            <Path Data="M 174,303 C 159,262 177,216 213,190 C 252,162 305,170 338,203"
+                  Stroke="{StaticResource PhotonGlowBrush}"
+                  StrokeThickness="24">
+                <Path.Effect>
+                    <BlurEffect Radius="27" />
+                </Path.Effect>
+            </Path>
+            <Path Data="M 198,326 C 232,354 293,355 333,318"
+                  Stroke="#52FF8429"
+                  StrokeThickness="17">
+                <Path.Effect>
+                    <BlurEffect Radius="23" />
+                </Path.Effect>
+            </Path>
+        </Canvas>
+        <Canvas x:Name="PhotonHalo"
+                Width="520"
+                Height="520"
+                Opacity="0.58"
+                IsHitTestVisible="False">
+            <Path Data="M 276,177 C 309,181 334,203 342,235"
+                  Stroke="{StaticResource PhotonGlowBrush}"
+                  StrokeThickness="8">
+                <Path.Effect>
+                    <BlurEffect Radius="10" />
+                </Path.Effect>
+            </Path>
+            <Path Data="M 178,282 C 174,255 181,232 196,212"
+                  Stroke="#69FF8C32"
+                  StrokeThickness="5">
+                <Path.Effect>
+                    <BlurEffect Radius="8" />
+                </Path.Effect>
+            </Path>
+            <Path Data="M 207,325 C 238,345 282,346 316,326"
+                  Stroke="#84FF8C32"
+                  StrokeThickness="4">
+                <Path.Effect>
+                    <BlurEffect Radius="9" />
+                </Path.Effect>
+            </Path>
+        </Canvas>
+        <Canvas x:Name="PhotonRing"
+                Width="520"
+                Height="520"
+                Opacity="0.9"
+                IsHitTestVisible="False">
+            <Path Data="M 278,181 C 310,186 333,208 341,239"
+                  Stroke="{StaticResource PhotonArcBrush}"
+                  StrokeThickness="2.4" />
+            <Path Data="M 182,280 C 178,258 183,237 194,219"
+                  Stroke="#B0FF963B"
+                  StrokeThickness="1.5"
+                  Opacity="0.72" />
+            <Path Data="M 215,329 C 243,341 282,340 309,327"
+                  Stroke="#C8FF9A42"
+                  StrokeThickness="1.2"
+                  Opacity="0.58" />
+            <Path Data="M 319,199 C 333,210 340,224 342,237"
+                  Stroke="#FFFFF7E9"
+                  StrokeThickness="2.8">
+                <Path.Effect>
+                    <BlurEffect Radius="1.4" />
+                </Path.Effect>
+            </Path>
+        </Canvas>
+
+        <Canvas x:Name="CoreVisual"
+                Width="160"
+                Height="160"
+                Canvas.Left="180"
+                Canvas.Top="180"
+                IsHitTestVisible="False"
+                RenderTransformOrigin="0.5,0.5">
+            <Canvas.RenderTransform>
+                <ScaleTransform x:Name="CoreScale" ScaleX="1" ScaleY="1" />
+            </Canvas.RenderTransform>
+            <Ellipse Width="132" Height="132" Canvas.Left="14" Canvas.Top="14">
+                <Ellipse.Fill>#FF000000</Ellipse.Fill>
+            </Ellipse>
+            <Path Data="M 33,110 C 58,133 107,137 132,104"
+                  Stroke="#16FF9A42"
+                  StrokeThickness="2">
+                <Path.Effect>
+                    <BlurEffect Radius="5" />
+                </Path.Effect>
+            </Path>
+        </Canvas>
+
+        <!-- Foreground matter crosses the core and creates the diagonal cinematic silhouette. -->
+        <Canvas x:Name="ForegroundDisk"
+                Width="520"
+                Height="520"
+                IsHitTestVisible="False"
+                RenderTransformOrigin="0.5,0.5">
+            <Canvas.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform x:Name="ForegroundScale" ScaleX="1" ScaleY="1" />
+                    <SkewTransform x:Name="ForegroundSkew" />
+                    <RotateTransform x:Name="ForegroundRotation" />
+                </TransformGroup>
+            </Canvas.RenderTransform>
+            <Path Data="M 39,349 C 130,336 204,312 262,287 C 335,255 406,234 488,218"
+                  Stroke="#47FF6F1A"
+                  StrokeThickness="36"
+                  Opacity="0.82">
+                <Path.Effect>
+                    <BlurEffect Radius="25" />
+                </Path.Effect>
+            </Path>
+            <Path Data="M 43,347 C 134,335 203,313 263,287 C 337,255 409,234 486,219"
+                  Stroke="{StaticResource HotMatterBrush}"
+                  StrokeThickness="15"
+                  Opacity="0.96">
+                <Path.Effect>
+                    <BlurEffect Radius="6" />
+                </Path.Effect>
+            </Path>
+            <Path Data="M 48,342 C 139,330 207,309 264,284 C 338,251 408,232 481,220"
+                  Stroke="{StaticResource WhiteHotBrush}"
+                  StrokeThickness="4.8"
+                  Opacity="0.98">
+                <Path.Effect>
+                    <BlurEffect Radius="2.2" />
+                </Path.Effect>
+            </Path>
+            <Path Data="M 72,359 C 163,343 215,326 271,300 C 342,267 404,247 461,237"
+                  Stroke="#B5FF8B31"
+                  StrokeThickness="2.6"
+                  Opacity="0.8" />
+            <Path Data="M 191,323 C 220,368 305,380 353,321"
+                  Stroke="#4AFF8F38"
+                  StrokeThickness="16">
+                <Path.Effect>
+                    <BlurEffect Radius="15" />
+                </Path.Effect>
+            </Path>
+            <Path Data="M 194,319 C 226,359 301,369 347,318"
+                  Stroke="#C8FFD0A0"
+                  StrokeThickness="4"
+                  Opacity="0.9">
+                <Path.Effect>
+                    <BlurEffect Radius="3" />
+                </Path.Effect>
+            </Path>
+        </Canvas>
+
+        <!-- Feedback overlays are driven by the single render timer. -->
+        <Ellipse x:Name="SuccessFlash"
+                 Width="170"
+                 Height="170"
+                 Canvas.Left="175"
+                 Canvas.Top="175"
+                 Fill="#55FFF4DB"
+                 Opacity="0"
+                 IsHitTestVisible="False">
+            <Ellipse.Effect>
+                <BlurEffect Radius="28" />
+            </Ellipse.Effect>
+        </Ellipse>
+        <Ellipse x:Name="FailureHalo"
+                 Width="170"
+                 Height="170"
+                 Canvas.Left="175"
+                 Canvas.Top="175"
                  Fill="Transparent"
-                 Stroke="#AAFFF8E9"
-                 StrokeThickness="12"
-                 Opacity="0.52">
+                 Stroke="#FFFF5B32"
+                 StrokeThickness="8"
+                 Opacity="0"
+                 IsHitTestVisible="False">
             <Ellipse.Effect>
-                <BlurEffect Radius="18" />
+                <BlurEffect Radius="8" />
             </Ellipse.Effect>
         </Ellipse>
-
-        <Ellipse x:Name="EventHorizon"
-                 Width="132"
-                 Height="132"
-                 Canvas.Left="194"
-                 Canvas.Top="194"
-                 Cursor="SizeAll"
-                 MouseLeftButtonDown="OnEventHorizonMouseLeftButtonDown">
-            <Ellipse.Fill>
-                <RadialGradientBrush>
-                    <GradientStop Color="#FF000000" Offset="0" />
-                    <GradientStop Color="#FF000000" Offset="0.76" />
-                    <GradientStop Color="#FF090604" Offset="0.91" />
-                    <GradientStop Color="#FFFFF7EA" Offset="1" />
-                </RadialGradientBrush>
-            </Ellipse.Fill>
-            <Ellipse.Effect>
-                <DropShadowEffect Color="#FFFFEBD0"
-                                  BlurRadius="24"
-                                  ShadowDepth="0"
-                                  Opacity="0.9" />
-            </Ellipse.Effect>
-        </Ellipse>
-
         <Ellipse x:Name="DropPulse"
                  Width="148"
                  Height="148"
                  Canvas.Left="186"
                  Canvas.Top="186"
                  Fill="Transparent"
-                 Stroke="#00FFFFFF"
-                 StrokeThickness="5"
-                 IsHitTestVisible="False" />
+                 Stroke="#FFFFF4DF"
+                 StrokeThickness="3"
+                 Opacity="0"
+                 IsHitTestVisible="False"
+                 RenderTransformOrigin="0.5,0.5">
+            <Ellipse.RenderTransform>
+                <ScaleTransform x:Name="DropPulseScale" ScaleX="1" ScaleY="1" />
+            </Ellipse.RenderTransform>
+        </Ellipse>
 
+        <!-- Fixed 132 px interaction target; decorative layers never intercept input. -->
+        <Ellipse x:Name="EventHorizon"
+                 Width="132"
+                 Height="132"
+                 Canvas.Left="194"
+                 Canvas.Top="194"
+                 Fill="#01000000"
+                 Cursor="SizeAll"
+                 MouseLeftButtonDown="OnEventHorizonMouseLeftButtonDown" />
+
+        <!-- Temporary instrument-style status, never a permanent card. -->
         <Border x:Name="StatusBadge"
-                Canvas.Left="110"
+                Canvas.Left="105"
                 Canvas.Top="444"
-                Width="300"
-                Padding="10,5"
-                CornerRadius="14"
-                Background="#BB090909"
-                BorderBrush="#44FFFFFF"
-                BorderThickness="1"
+                Width="310"
+                Height="52"
+                Background="#B2120E0B"
+                BorderBrush="#6AE9A566"
+                BorderThickness="1,0,1,0"
                 Opacity="0"
                 IsHitTestVisible="False">
-            <TextBlock x:Name="StatusText"
-                       Foreground="#FFF7EBDD"
-                       FontSize="13"
-                       TextAlignment="Center"
-                       TextTrimming="CharacterEllipsis" />
+            <Grid Margin="12,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="6" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="34" />
+                </Grid.ColumnDefinitions>
+                <Border Grid.Column="0"
+                        Width="2"
+                        Margin="0,3,4,3"
+                        HorizontalAlignment="Left"
+                        Background="#FFFFA44D" />
+                <StackPanel Grid.Column="1" Margin="5,0,8,0">
+                    <TextBlock x:Name="StatusLabel"
+                               Text="GRAVITY LOCK"
+                               Foreground="#CCFFB86A"
+                               FontFamily="Consolas"
+                               FontSize="9"
+                               FontWeight="SemiBold" />
+                    <TextBlock x:Name="StatusText"
+                               Margin="0,2,0,0"
+                               Foreground="#FFF8E7D3"
+                               FontFamily="Microsoft YaHei UI"
+                               FontSize="11.5"
+                               TextTrimming="CharacterEllipsis" />
+                </StackPanel>
+                <Canvas Grid.Column="2" Width="31" Height="36" Opacity="0.8">
+                    <Rectangle Width="2" Height="7" Canvas.Left="2" Canvas.Top="25" Fill="#99FFBD78" />
+                    <Rectangle Width="2" Height="12" Canvas.Left="8" Canvas.Top="20" Fill="#AAFFC180" />
+                    <Rectangle Width="2" Height="18" Canvas.Left="14" Canvas.Top="14" Fill="#BBFFD09D" />
+                    <Rectangle Width="2" Height="25" Canvas.Left="20" Canvas.Top="7" Fill="#DDFFE1BE" />
+                    <Line X1="0" Y1="33" X2="28" Y2="33" Stroke="#55FFC98B" StrokeThickness="1" />
+                </Canvas>
+            </Grid>
         </Border>
     </Canvas>
 </Window>

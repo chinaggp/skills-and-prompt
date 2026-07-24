@@ -9,4 +9,14 @@
     <ProjectReference Include="..\WindowsBlackHole.Core\WindowsBlackHole.Core.csproj" />
     <ProjectReference Include="..\WindowsBlackHole.Shell\WindowsBlackHole.Shell.csproj" />
   </ItemGroup>
+  <ItemGroup Condition="Exists('..\WindowsBlackHole.Renderer\build\Release\WindowsBlackHole.Renderer.dll')">
+    <Content Include="..\WindowsBlackHole.Renderer\build\Release\WindowsBlackHole.Renderer.dll">
+      <Link>WindowsBlackHole.Renderer.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\WindowsBlackHole.Renderer\build\Release\shaders\GravitationalLens.cso">
+      <Link>shaders\GravitationalLens.cso</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 </Project>

@@ -17,7 +17,23 @@ internal static class Program
         {
             ("中心点位于事件视界内", () => Assert(BlackHoleGeometry.IsInsideEventHorizon(260, 260))),
             ("窗口角落不在事件视界内", () => Assert(!BlackHoleGeometry.IsInsideEventHorizon(0, 0))),
+            ("事件视界半径边界位于事件视界内", () =>
+                Assert(
+                    BlackHoleGeometry.IsInsideEventHorizon(
+                        BlackHoleGeometry.Center + BlackHoleGeometry.EventHorizonRadius,
+                        BlackHoleGeometry.Center))),
+            ("事件视界边界外极小距离不在事件视界内", () =>
+                Assert(
+                    !BlackHoleGeometry.IsInsideEventHorizon(
+                        BlackHoleGeometry.Center + BlackHoleGeometry.EventHorizonRadius + 0.001,
+                        BlackHoleGeometry.Center))),
             ("中心接近度为 1", () => AssertNearly(1, BlackHoleGeometry.Proximity(260, 260))),
+            ("影响半径边界接近度为 0", () =>
+                AssertNearly(
+                    0,
+                    BlackHoleGeometry.Proximity(
+                        BlackHoleGeometry.Center + BlackHoleGeometry.InfluenceRadius,
+                        BlackHoleGeometry.Center))),
             ("影响范围外接近度为 0", () => AssertNearly(0, BlackHoleGeometry.Proximity(0, 0))),
             ("不存在的路径被拒绝", () =>
             {
