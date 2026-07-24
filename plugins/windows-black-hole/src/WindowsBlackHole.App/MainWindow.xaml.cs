@@ -1,6 +1,8 @@
 using System.Diagnostics;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
@@ -117,8 +119,23 @@ public partial class MainWindow : Window
         MatterStreamSkew.AngleX = Math.Sin(elapsed * 1.9) * (1 + (proximity * 4));
 
         LensGlow.Opacity = 0.34 + (proximity * 0.48) + (breath * 0.08);
+        LensGlowParticleRotation.Angle = -((elapsed * 0.045) % 360);
+        LensGlowParticleTranslation.X = Math.Sin(elapsed * 0.055) * 0.85;
+        LensGlowParticleTranslation.Y = Math.Cos(elapsed * 0.041) * 0.6;
+        PhotonHaloOuterRotation.Angle = (elapsed * 0.16) % 360;
+        PhotonHaloOuterTranslation.X = Math.Sin(elapsed * 0.11) * 1.1;
+        PhotonHaloOuterTranslation.Y = Math.Cos(elapsed * 0.08) * 0.7;
+        PhotonHaloInnerRotation.Angle = -((elapsed * 0.11) % 360);
+        PhotonHaloInnerTranslation.X = Math.Cos(elapsed * 0.09) * 0.65;
+        PhotonHaloInnerTranslation.Y = Math.Sin(elapsed * 0.13) * 0.95;
+        PhotonHaloSparkRotation.Angle = (elapsed * 0.19) % 360;
+        PhotonHaloSparkTranslation.X = Math.Sin(elapsed * 0.07) * 0.5;
+        PhotonHaloSparkTranslation.Y = Math.Cos(elapsed * 0.15) * 0.8;
         PhotonHalo.Opacity = 0.48 + (proximity * 0.4) + (breath * 0.08);
         PhotonRing.Opacity = 0.76 + (proximity * 0.22);
+        PhotonRingParticleRotation.Angle = (elapsed * 0.072) % 360;
+        PhotonRingParticleTranslation.X = Math.Cos(elapsed * 0.063) * 0.45;
+        PhotonRingParticleTranslation.Y = Math.Sin(elapsed * 0.049) * 0.7;
 
         UpdateFeedbackAnimation(elapsed);
         UpdateStatusOpacity(elapsed, delta);
@@ -343,6 +360,7 @@ public partial class MainWindow : Window
     private void OnDragLeave(object sender, DragEventArgs e)
     {
         _isFileDragActive = false;
+        HideFileDragVisual();
         SetFeedbackState(VisualFeedbackState.Idle);
         HideStatus();
     }
@@ -360,10 +378,13 @@ public partial class MainWindow : Window
 
         if (!hasFiles)
         {
+            HideFileDragVisual();
             SetFeedbackState(VisualFeedbackState.Idle);
             HideStatus();
             return;
         }
+
+        UpdateFileDragVisual(position, proximity, e.Data);
 
         if (isInside)
         {
@@ -397,6 +418,7 @@ public partial class MainWindow : Window
     private void OnDrop(object sender, DragEventArgs e)
     {
         _isFileDragActive = false;
+        HideFileDragVisual();
         var position = e.GetPosition(RootCanvas);
 
         if (!e.Data.GetDataPresent(DataFormats.FileDrop))
@@ -434,6 +456,50 @@ public partial class MainWindow : Window
         {
             ShowFailure(exception.Message);
         }
+    }
+
+    private void UpdateFileDragVisual(Point position, double proximity, IDataObject data)
+    {
+        if (proximity <= 0)
+        {
+            HideFileDragVisual();
+            return;
+        }
+
+        var transform = BlackHoleGeometry.DragLensTransform(position.X, position.Y);
+        Canvas.SetLeft(FileDragProxy, transform.X - (FileDragProxy.Width / 2));
+        Canvas.SetTop(FileDragProxy, transform.Y - (FileDragProxy.Height / 2));
+        FileDragProxyScale.ScaleX = transform.ScaleX;
+        FileDragProxyScale.ScaleY = transform.ScaleY;
+        FileDragProxySkew.AngleY = transform.SkewDegrees;
+        FileDragProxyRotation.Angle = transform.RotationDegrees;
+        FileDragProxy.Opacity = transform.Opacity;
+
+        DragGravityTrail.X1 = position.X;
+        DragGravityTrail.Y1 = position.Y;
+        DragGravityTrail.X2 = transform.X;
+        DragGravityTrail.Y2 = transform.Y;
+        DragGravityTrail.StrokeThickness = 1.2 + (proximity * 5.5);
+        DragGravityTrail.Opacity = transform.Opacity * 0.78;
+
+        if (data.GetData(DataFormats.FileDrop) is not string[] paths || paths.Length == 0)
+        {
+            FileDragExtension.Text = "FILE";
+            FileDragCount.Text = "1 ITEM";
+            return;
+        }
+
+        var extension = Path.GetExtension(paths[0]).TrimStart('.').ToUpperInvariant();
+        FileDragExtension.Text = string.IsNullOrWhiteSpace(extension)
+            ? "FOLDER"
+            : extension[..Math.Min(extension.Length, 6)];
+        FileDragCount.Text = paths.Length == 1 ? "1 ITEM" : $"+{paths.Length - 1} MORE";
+    }
+
+    private void HideFileDragVisual()
+    {
+        FileDragProxy.Opacity = 0;
+        DragGravityTrail.Opacity = 0;
     }
 
     private void PlayConsumeAnimation()

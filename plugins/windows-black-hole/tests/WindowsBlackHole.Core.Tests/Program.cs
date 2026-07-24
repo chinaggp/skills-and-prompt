@@ -35,6 +35,32 @@ internal static class Program
                         BlackHoleGeometry.Center + BlackHoleGeometry.InfluenceRadius,
                         BlackHoleGeometry.Center))),
             ("影响范围外接近度为 0", () => AssertNearly(0, BlackHoleGeometry.Proximity(0, 0))),
+            ("影响范围外文件代理不可见", () =>
+            {
+                var transform = BlackHoleGeometry.DragLensTransform(0, 0);
+                AssertNearly(0, transform.Opacity);
+                AssertNearly(1, transform.ScaleX);
+                AssertNearly(1, transform.ScaleY);
+            }),
+            ("文件靠近黑洞时向中心偏转并沿引力方向拉伸", () =>
+            {
+                var x = BlackHoleGeometry.Center + 120;
+                var transform = BlackHoleGeometry.DragLensTransform(x, BlackHoleGeometry.Center);
+                Assert(transform.X < x);
+                Assert(transform.X > BlackHoleGeometry.Center);
+                Assert(transform.ScaleX > 1);
+                Assert(transform.ScaleY < 1);
+                Assert(transform.Opacity > 0);
+            }),
+            ("文件进入中心时坍缩而不是无限拉伸", () =>
+            {
+                var transform = BlackHoleGeometry.DragLensTransform(
+                    BlackHoleGeometry.Center,
+                    BlackHoleGeometry.Center);
+                Assert(transform.ScaleX < 0.3);
+                Assert(transform.ScaleY < 0.2);
+                Assert(transform.Opacity < 0.2);
+            }),
             ("不存在的路径被拒绝", () =>
             {
                 var result = DropValidator.Validate(

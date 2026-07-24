@@ -269,77 +269,216 @@
                   Opacity="0.75" />
         </Canvas>
 
-        <!-- Broken photon arcs avoid a synthetic, uniformly lit UI ring. -->
+        <!-- Diffuse lensing is carried by irregular soft photon clusters, not a continuous halo. -->
         <Canvas x:Name="LensGlow"
                 Width="520"
                 Height="520"
                 Opacity="0.42"
-                IsHitTestVisible="False">
-            <Path Data="M 174,303 C 159,262 177,216 213,190 C 252,162 305,170 338,203"
-                  Stroke="{StaticResource PhotonGlowBrush}"
-                  StrokeThickness="24">
-                <Path.Effect>
-                    <BlurEffect Radius="27" />
-                </Path.Effect>
-            </Path>
-            <Path Data="M 198,326 C 232,354 293,355 333,318"
-                  Stroke="#52FF8429"
-                  StrokeThickness="17">
-                <Path.Effect>
-                    <BlurEffect Radius="23" />
-                </Path.Effect>
-            </Path>
+                IsHitTestVisible="False"
+                RenderTransformOrigin="0.5,0.5">
+            <Canvas.RenderTransform>
+                <TransformGroup>
+                    <RotateTransform x:Name="LensGlowParticleRotation" CenterX="260" CenterY="260" />
+                    <TranslateTransform x:Name="LensGlowParticleTranslation" />
+                </TransformGroup>
+            </Canvas.RenderTransform>
+            <Ellipse Width="38" Height="25" Canvas.Left="173" Canvas.Top="265" Fill="#20FF8B32">
+                <Ellipse.Effect>
+                    <BlurEffect Radius="19" />
+                </Ellipse.Effect>
+            </Ellipse>
+            <Ellipse Width="28" Height="30" Canvas.Left="202" Canvas.Top="191" Fill="#1CFFB76B">
+                <Ellipse.Effect>
+                    <BlurEffect Radius="16" />
+                </Ellipse.Effect>
+            </Ellipse>
+            <Ellipse Width="34" Height="22" Canvas.Left="276" Canvas.Top="172" Fill="#24FFF0D4">
+                <Ellipse.Effect>
+                    <BlurEffect Radius="18" />
+                </Ellipse.Effect>
+            </Ellipse>
+            <Ellipse Width="24" Height="32" Canvas.Left="326" Canvas.Top="211" Fill="#22FF9A43">
+                <Ellipse.Effect>
+                    <BlurEffect Radius="15" />
+                </Ellipse.Effect>
+            </Ellipse>
+            <Ellipse Width="31" Height="20" Canvas.Left="303" Canvas.Top="303" Fill="#20FFC06E">
+                <Ellipse.Effect>
+                    <BlurEffect Radius="17" />
+                </Ellipse.Effect>
+            </Ellipse>
+            <Ellipse Width="27" Height="24" Canvas.Left="231" Canvas.Top="329" Fill="#1EFFF6E2">
+                <Ellipse.Effect>
+                    <BlurEffect Radius="16" />
+                </Ellipse.Effect>
+            </Ellipse>
+            <Ellipse Width="22" Height="29" Canvas.Left="185" Canvas.Top="302" Fill="#1AFF8530">
+                <Ellipse.Effect>
+                    <BlurEffect Radius="15" />
+                </Ellipse.Effect>
+            </Ellipse>
         </Canvas>
         <Canvas x:Name="PhotonHalo"
                 Width="520"
                 Height="520"
                 Opacity="0.58"
                 IsHitTestVisible="False">
-            <Path Data="M 276,177 C 309,181 334,203 342,235"
-                  Stroke="{StaticResource PhotonGlowBrush}"
-                  StrokeThickness="8">
-                <Path.Effect>
-                    <BlurEffect Radius="10" />
-                </Path.Effect>
-            </Path>
-            <Path Data="M 178,282 C 174,255 181,232 196,212"
-                  Stroke="#69FF8C32"
-                  StrokeThickness="5">
-                <Path.Effect>
-                    <BlurEffect Radius="8" />
-                </Path.Effect>
-            </Path>
-            <Path Data="M 207,325 C 238,345 282,346 316,326"
-                  Stroke="#84FF8C32"
-                  StrokeThickness="4">
-                <Path.Effect>
-                    <BlurEffect Radius="9" />
-                </Path.Effect>
-            </Path>
+            <!-- Independent photon clusters keep the event horizon luminous without forming a synthetic arc. -->
+            <Canvas Width="520" Height="520" RenderTransformOrigin="0.5,0.5">
+                <Canvas.RenderTransform>
+                    <TransformGroup>
+                        <RotateTransform x:Name="PhotonHaloOuterRotation" CenterX="260" CenterY="260" />
+                        <TranslateTransform x:Name="PhotonHaloOuterTranslation" />
+                    </TransformGroup>
+                </Canvas.RenderTransform>
+                <Ellipse Width="14" Height="14" Canvas.Left="299" Canvas.Top="170" Fill="#1CFFB56A">
+                    <Ellipse.Effect>
+                        <BlurEffect Radius="7" />
+                    </Ellipse.Effect>
+                </Ellipse>
+                <Ellipse Width="3.8" Height="3.8" Canvas.Left="304" Canvas.Top="175" Fill="#FFFFF5DF" />
+                <Ellipse Width="3" Height="3" Canvas.Left="334" Canvas.Top="205" Fill="#DFFFF0C7" />
+                <Ellipse Width="5" Height="5" Canvas.Left="343" Canvas.Top="244" Fill="#BFFF9E47" />
+                <Ellipse Width="2.4" Height="2.4" Canvas.Left="324" Canvas.Top="292" Fill="#BFFFF8E7" />
+                <Ellipse Width="4.2" Height="4.2" Canvas.Left="286" Canvas.Top="326" Fill="#D8FFA14B" />
+                <Ellipse Width="2.8" Height="2.8" Canvas.Left="241" Canvas.Top="338" Fill="#CFFFF6D7" />
+                <Ellipse Width="3.6" Height="3.6" Canvas.Left="197" Canvas.Top="314" Fill="#CFFF9B42" />
+                <Ellipse Width="2.2" Height="2.2" Canvas.Left="174" Canvas.Top="270" Fill="#AFFFF8E4" />
+                <Ellipse Width="4.4" Height="4.4" Canvas.Left="188" Canvas.Top="222" Fill="#C8FF9137" />
+                <Ellipse Width="2.6" Height="2.6" Canvas.Left="224" Canvas.Top="188" Fill="#BFFFF2CE" />
+            </Canvas>
+            <Canvas Width="520" Height="520" RenderTransformOrigin="0.5,0.5">
+                <Canvas.RenderTransform>
+                    <TransformGroup>
+                        <RotateTransform x:Name="PhotonHaloInnerRotation" CenterX="260" CenterY="260" />
+                        <TranslateTransform x:Name="PhotonHaloInnerTranslation" />
+                    </TransformGroup>
+                </Canvas.RenderTransform>
+                <Ellipse Width="10" Height="10" Canvas.Left="278" Canvas.Top="191" Fill="#1EFFE0A7">
+                    <Ellipse.Effect>
+                        <BlurEffect Radius="5" />
+                    </Ellipse.Effect>
+                </Ellipse>
+                <Ellipse Width="3.4" Height="3.4" Canvas.Left="282" Canvas.Top="195" Fill="#FFFFF9EC" />
+                <Ellipse Width="2.4" Height="2.4" Canvas.Left="309" Canvas.Top="215" Fill="#E5FFC06E" />
+                <Ellipse Width="3.2" Height="3.2" Canvas.Left="319" Canvas.Top="251" Fill="#DFFFF4D7" />
+                <Ellipse Width="2.2" Height="2.2" Canvas.Left="300" Canvas.Top="284" Fill="#D7FF9A44" />
+                <Ellipse Width="3.8" Height="3.8" Canvas.Left="265" Canvas.Top="302" Fill="#CFFFE9BD" />
+                <Ellipse Width="2.5" Height="2.5" Canvas.Left="228" Canvas.Top="294" Fill="#C5FF9D48" />
+                <Ellipse Width="3" Height="3" Canvas.Left="203" Canvas.Top="267" Fill="#D8FFFFEE" />
+                <Ellipse Width="2" Height="2" Canvas.Left="207" Canvas.Top="232" Fill="#BFFFF0CC" />
+                <Ellipse Width="3.6" Height="3.6" Canvas.Left="237" Canvas.Top="204" Fill="#CFFF963B" />
+            </Canvas>
+            <Canvas Width="520" Height="520" RenderTransformOrigin="0.5,0.5">
+                <Canvas.RenderTransform>
+                    <TransformGroup>
+                        <RotateTransform x:Name="PhotonHaloSparkRotation" CenterX="260" CenterY="260" />
+                        <TranslateTransform x:Name="PhotonHaloSparkTranslation" />
+                    </TransformGroup>
+                </Canvas.RenderTransform>
+                <Ellipse Width="2" Height="2" Canvas.Left="319" Canvas.Top="186" Fill="#FFFFFBF1" />
+                <Ellipse Width="2.8" Height="2.8" Canvas.Left="349" Canvas.Top="225" Fill="#EFFFF1D4" />
+                <Ellipse Width="1.8" Height="1.8" Canvas.Left="332" Canvas.Top="280" Fill="#DFFFF7E6" />
+                <Ellipse Width="2.6" Height="2.6" Canvas.Left="302" Canvas.Top="315" Fill="#DFFF9D45" />
+                <Ellipse Width="1.7" Height="1.7" Canvas.Left="248" Canvas.Top="332" Fill="#EFFFF9EA" />
+                <Ellipse Width="2.4" Height="2.4" Canvas.Left="194" Canvas.Top="291" Fill="#D5FF9840" />
+                <Ellipse Width="1.9" Height="1.9" Canvas.Left="178" Canvas.Top="242" Fill="#DFFFF5DC" />
+                <Ellipse Width="2.5" Height="2.5" Canvas.Left="210" Canvas.Top="199" Fill="#CFFF9A42" />
+                <Ellipse Width="1.6" Height="1.6" Canvas.Left="261" Canvas.Top="180" Fill="#EFFFFBF0" />
+            </Canvas>
         </Canvas>
         <Canvas x:Name="PhotonRing"
                 Width="520"
                 Height="520"
                 Opacity="0.9"
-                IsHitTestVisible="False">
-            <Path Data="M 278,181 C 310,186 333,208 341,239"
-                  Stroke="{StaticResource PhotonArcBrush}"
-                  StrokeThickness="2.4" />
-            <Path Data="M 182,280 C 178,258 183,237 194,219"
-                  Stroke="#B0FF963B"
-                  StrokeThickness="1.5"
-                  Opacity="0.72" />
-            <Path Data="M 215,329 C 243,341 282,340 309,327"
-                  Stroke="#C8FF9A42"
-                  StrokeThickness="1.2"
-                  Opacity="0.58" />
-            <Path Data="M 319,199 C 333,210 340,224 342,237"
-                  Stroke="#FFFFF7E9"
-                  StrokeThickness="2.8">
-                <Path.Effect>
-                    <BlurEffect Radius="1.4" />
-                </Path.Effect>
-            </Path>
+                IsHitTestVisible="False"
+                RenderTransformOrigin="0.5,0.5">
+            <Canvas.RenderTransform>
+                <TransformGroup>
+                    <RotateTransform x:Name="PhotonRingParticleRotation" CenterX="260" CenterY="260" />
+                    <TranslateTransform x:Name="PhotonRingParticleTranslation" />
+                </TransformGroup>
+            </Canvas.RenderTransform>
+            <Ellipse Width="5.2" Height="5.2" Canvas.Left="257.4" Canvas.Top="175.4" Fill="#FFFFFAEE">
+                <Ellipse.Effect>
+                    <BlurEffect Radius="1.3" />
+                </Ellipse.Effect>
+            </Ellipse>
+            <Ellipse Width="2.2" Height="2.2" Canvas.Left="270" Canvas.Top="174.6" Fill="#DFFFF3D8" />
+            <Ellipse Width="3.2" Height="3.2" Canvas.Left="279.4" Canvas.Top="180.2" Fill="#EFFFF4D4" />
+            <Ellipse Width="4.4" Height="4.4" Canvas.Left="290.7" Canvas.Top="178.3" Fill="#E5FF9E47" />
+            <Ellipse Width="2.6" Height="2.6" Canvas.Left="300.2" Canvas.Top="186.8" Fill="#F5FFFFF0" />
+            <Ellipse Width="3.8" Height="3.8" Canvas.Left="306.8" Canvas.Top="194.6" Fill="#DFFF9A42" />
+            <Ellipse Width="4.8" Height="4.8" Canvas.Left="319.1" Canvas.Top="196.1" Fill="#EFFFF7E5">
+                <Ellipse.Effect>
+                    <BlurEffect Radius="1.3" />
+                </Ellipse.Effect>
+            </Ellipse>
+            <Ellipse Width="2.1" Height="2.1" Canvas.Left="324" Canvas.Top="209" Fill="#CFFFF1D2" />
+            <Ellipse Width="3.4" Height="3.4" Canvas.Left="331" Canvas.Top="216.3" Fill="#E5FFAB57" />
+            <Ellipse Width="2.5" Height="2.5" Canvas.Left="332.7" Canvas.Top="228.1" Fill="#DFFF963B" />
+            <Ellipse Width="4.6" Height="4.6" Canvas.Left="340.8" Canvas.Top="235.4" Fill="#F2FFFFF2" />
+            <Ellipse Width="2.8" Height="2.8" Canvas.Left="340.9" Canvas.Top="247.8" Fill="#CFFF9740" />
+            <Ellipse Width="4.1" Height="4.1" Canvas.Left="342" Canvas.Top="258" Fill="#FFFFFAEE">
+                <Ellipse.Effect>
+                    <BlurEffect Radius="1.3" />
+                </Ellipse.Effect>
+            </Ellipse>
+            <Ellipse Width="2" Height="2" Canvas.Left="338.3" Canvas.Top="269.4" Fill="#DFFFF3D8" />
+            <Ellipse Width="3.6" Height="3.6" Canvas.Left="341.3" Canvas.Top="280.5" Fill="#EFFFF4D4" />
+            <Ellipse Width="4.9" Height="4.9" Canvas.Left="333.3" Canvas.Top="288.9" Fill="#E5FF9E47" />
+            <Ellipse Width="2.4" Height="2.4" Canvas.Left="332.4" Canvas.Top="301.3" Fill="#F5FFFFF0" />
+            <Ellipse Width="3.1" Height="3.1" Canvas.Left="322.7" Canvas.Top="307.8" Fill="#DFFF9A42" />
+            <Ellipse Width="4.3" Height="4.3" Canvas.Left="319.4" Canvas.Top="319.4" Fill="#EFFFF7E5">
+                <Ellipse.Effect>
+                    <BlurEffect Radius="1.3" />
+                </Ellipse.Effect>
+            </Ellipse>
+            <Ellipse Width="2.7" Height="2.7" Canvas.Left="309.2" Canvas.Top="324.5" Fill="#CFFFF1D2" />
+            <Ellipse Width="3.9" Height="3.9" Canvas.Left="298" Canvas.Top="327.3" Fill="#E5FFAB57" />
+            <Ellipse Width="2.2" Height="2.2" Canvas.Left="291.8" Canvas.Top="338.4" Fill="#DFFF963B" />
+            <Ellipse Width="5" Height="5" Canvas.Left="278.7" Canvas.Top="336.7" Fill="#F2FFFFF2" />
+            <Ellipse Width="2.6" Height="2.6" Canvas.Left="269.7" Canvas.Top="342" Fill="#CFFF9740" />
+            <Ellipse Width="3.3" Height="3.3" Canvas.Left="258.4" Canvas.Top="339.4" Fill="#FFFFFAEE">
+                <Ellipse.Effect>
+                    <BlurEffect Radius="1.3" />
+                </Ellipse.Effect>
+            </Ellipse>
+            <Ellipse Width="4.7" Height="4.7" Canvas.Left="246.6" Canvas.Top="341.9" Fill="#DFFFF3D8" />
+            <Ellipse Width="2.1" Height="2.1" Canvas.Left="238.2" Canvas.Top="336.2" Fill="#EFFFF4D4" />
+            <Ellipse Width="3.8" Height="3.8" Canvas.Left="224.8" Canvas.Top="338.5" Fill="#E5FF9E47" />
+            <Ellipse Width="2.9" Height="2.9" Canvas.Left="217" Canvas.Top="330.4" Fill="#F5FFFFF0" />
+            <Ellipse Width="4.5" Height="4.5" Canvas.Left="208.4" Canvas.Top="322" Fill="#DFFF9A42" />
+            <Ellipse Width="2.4" Height="2.4" Canvas.Left="198" Canvas.Top="319.6" Fill="#EFFFF7E5">
+                <Ellipse.Effect>
+                    <BlurEffect Radius="1.3" />
+                </Ellipse.Effect>
+            </Ellipse>
+            <Ellipse Width="3.5" Height="3.5" Canvas.Left="193.2" Canvas.Top="308.2" Fill="#CFFFF1D2" />
+            <Ellipse Width="5.1" Height="5.1" Canvas.Left="184.7" Canvas.Top="299.5" Fill="#E5FFAB57" />
+            <Ellipse Width="2.3" Height="2.3" Canvas.Left="184.9" Canvas.Top="289.5" Fill="#DFFF963B" />
+            <Ellipse Width="3.7" Height="3.7" Canvas.Left="174.1" Canvas.Top="280.7" Fill="#F2FFFFF2" />
+            <Ellipse Width="2.8" Height="2.8" Canvas.Left="176.3" Canvas.Top="269.4" Fill="#CFFF9740" />
+            <Ellipse Width="4.6" Height="4.6" Canvas.Left="176.7" Canvas.Top="257.7" Fill="#FFFFFAEE">
+                <Ellipse.Effect>
+                    <BlurEffect Radius="1.3" />
+                </Ellipse.Effect>
+            </Ellipse>
+            <Ellipse Width="2" Height="2" Canvas.Left="173.7" Canvas.Top="247.8" Fill="#DFFFF3D8" />
+            <Ellipse Width="3.4" Height="3.4" Canvas.Left="179.1" Canvas.Top="237.1" Fill="#EFFFF4D4" />
+            <Ellipse Width="4.8" Height="4.8" Canvas.Left="179.1" Canvas.Top="225.1" Fill="#E5FF9E47" />
+            <Ellipse Width="2.5" Height="2.5" Canvas.Left="189.5" Canvas.Top="218.8" Fill="#F5FFFFF0" />
+            <Ellipse Width="3.9" Height="3.9" Canvas.Left="189" Canvas.Top="205.1" Fill="#DFFF9A42" />
+            <Ellipse Width="2.2" Height="2.2" Canvas.Left="200.2" Canvas.Top="200.2" Fill="#EFFFF7E5">
+                <Ellipse.Effect>
+                    <BlurEffect Radius="1.3" />
+                </Ellipse.Effect>
+            </Ellipse>
+            <Ellipse Width="4.4" Height="4.4" Canvas.Left="208.5" Canvas.Top="193.5" Fill="#CFFFF1D2" />
+            <Ellipse Width="2.7" Height="2.7" Canvas.Left="215.6" Canvas.Top="184.2" Fill="#E5FFAB57" />
+            <Ellipse Width="3.6" Height="3.6" Canvas.Left="226.8" Canvas.Top="182.4" Fill="#DFFF963B" />
+            <Ellipse Width="5.2" Height="5.2" Canvas.Left="235.7" Canvas.Top="176.3" Fill="#F2FFFFF2" />
+            <Ellipse Width="2.4" Height="2.4" Canvas.Left="248.4" Canvas.Top="179.5" Fill="#CFFF9740" />
         </Canvas>
 
         <Canvas x:Name="CoreVisual"
@@ -421,6 +560,72 @@
                 </Path.Effect>
             </Path>
         </Canvas>
+
+        <!-- The shell drag image cannot be transformed by WPF, so render a lens-warped
+             file proxy inside the gravity field to make the dragged object bend visibly. -->
+        <Line x:Name="DragGravityTrail"
+              Stroke="#B8FFD29A"
+              StrokeThickness="2"
+              StrokeStartLineCap="Round"
+              StrokeEndLineCap="Round"
+              Opacity="0"
+              IsHitTestVisible="False">
+            <Line.Effect>
+                <BlurEffect Radius="3" />
+            </Line.Effect>
+        </Line>
+        <Border x:Name="FileDragProxy"
+                Width="68"
+                Height="46"
+                CornerRadius="7"
+                Background="#E81A120D"
+                BorderBrush="#FFFFD09A"
+                BorderThickness="1.4"
+                Opacity="0"
+                IsHitTestVisible="False"
+                RenderTransformOrigin="0.5,0.5">
+            <Border.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform x:Name="FileDragProxyScale" />
+                    <SkewTransform x:Name="FileDragProxySkew" />
+                    <RotateTransform x:Name="FileDragProxyRotation" />
+                </TransformGroup>
+            </Border.RenderTransform>
+            <Grid Margin="6,4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="28" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Path Grid.Column="0"
+                      Width="20"
+                      Height="26"
+                      Stretch="Fill"
+                      Fill="#FFFFE4BD"
+                      Data="M 2,0 L 13,0 L 20,7 L 20,26 L 2,26 Z M 13,0 L 13,7 L 20,7"
+                      Opacity="0.92" />
+                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                    <TextBlock x:Name="FileDragExtension"
+                               Text="FILE"
+                               Foreground="#FFFFFFFF"
+                               FontFamily="Consolas"
+                               FontSize="9"
+                               FontWeight="Bold"
+                               TextTrimming="CharacterEllipsis" />
+                    <TextBlock x:Name="FileDragCount"
+                               Text="1 ITEM"
+                               Margin="0,2,0,0"
+                               Foreground="#CCFFC684"
+                               FontFamily="Consolas"
+                               FontSize="7.5" />
+                </StackPanel>
+            </Grid>
+            <Border.Effect>
+                <DropShadowEffect Color="#FFFF8A32"
+                                  BlurRadius="13"
+                                  ShadowDepth="0"
+                                  Opacity="0.72" />
+            </Border.Effect>
+        </Border>
 
         <!-- Feedback overlays are driven by the single render timer. -->
         <Ellipse x:Name="SuccessFlash"
