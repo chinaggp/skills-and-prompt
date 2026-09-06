@@ -13,7 +13,7 @@ Spec-Master 在每个项目中使用以下目录结构：
 
 ```
 [项目根目录]/
-└── .agent/spec/                    # SDD 工作目录
+└── .agents/spec/                   # SDD 工作目录
     ├── constitution.md             # 🏛️ 项目宪法（项目特有的基本准则）
     └── [日期+需求名称]/                  # 📦 按需求聚合（每个需求一个目录）
         ├── spec.md                 # 需求规范
@@ -32,7 +32,7 @@ Spec-Master 在每个项目中使用以下目录结构：
 
 ### 阶段 0: 初始化（首次在项目中使用时）
 
-1. 检查项目中是否存在 `.agent/spec/constitution.md`
+1. 检查项目中是否存在 `.agents/spec/constitution.md`
 2. 如果不存在：
    - 基于 `templates/constitution.md` 模板创建
    - 根据项目的技术栈和业务场景，**与用户一起定制宪法内容**
@@ -44,7 +44,7 @@ Spec-Master 在每个项目中使用以下目录结构：
 > 🎯 明确 **做什么** 和 **为什么**
 
 1. 与用户沟通需求，理解业务背景和目标
-2. 在 `.agent/spec/` 下创建需求目录（简短命名，例如 `积分兑换`）
+2. 在 `.agents/spec/` 下创建需求目录（简短命名，例如 `积分兑换`）
 3. 基于 `templates/spec.md` 模板创建 `spec.md`
 4. 填写内容：
    - 背景与动机（为什么要做）
@@ -125,7 +125,7 @@ Spec-Master 在每个项目中使用以下目录结构：
 
 | 文件         | 作用                          |
 | ------------ | ----------------------------- |
-| 项目宪法     | `.agent/spec/constitution.md` |
+| 项目宪法     | `.agents/spec/constitution.md` |
 | 需求规范模板 | `templates/spec.md`           |
 | 技术方案模板 | `templates/plan.md`           |
 | 任务清单模板 | `templates/tasks.md`          |
